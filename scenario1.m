@@ -14,8 +14,17 @@ function scenario1()
     a = matfile('data1616.mat');
     trn = a.a;
     
-    %train it
-    W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
+    %train it: trying with knnc, because it is good
+    w = trn*knnc;
+    
+    %combiners
+    
+    %pca
+    
+    %something else?
+    
+    %cross-val for some reason
+    prcrossval(trn,knnc,10,10)
     
     %test it
     %final_test(trn*knn);
