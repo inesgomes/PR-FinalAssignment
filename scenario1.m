@@ -11,15 +11,14 @@
 
 function scenario1()
     %addpaths() %just the first run :)
-    a = matfile('data1.mat');
+    a = matfile('data1616.mat');
     trn = a.a;
     
     %train it
-    %W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
+    W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
     
     %test it
-    w = trn*knn;
-    final_test(w);
+    %final_test(trn*knn);
 end
 
 function final_test(w)

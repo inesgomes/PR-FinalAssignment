@@ -10,15 +10,20 @@
 %W*a*labelc
 
 function scenario1()
-    %addpaths()
+    %addpaths() %just the first run :)
     a = matfile('data1.mat');
     trn = a.a;
     
     %train it
-    W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
-    w = trn*knnc;
+    %W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
     
-    nist_eval('my_rep',W,100)
+    %test it
+    w = trn*knn;
+    %final_test(w);
+end
+
+function final_test(w)
+    nist_eval('my_rep',w,100)
 end
 
 function addpaths
