@@ -20,8 +20,7 @@ function scenario1()
         R_vec(i,:) = testc(tst*W);
     end
     plot(R_vec);
-    legend('parzen','knn','naiveb','logl');
-    mean(R_vec)
+    legend('',
     
     %OR use cross-validation ?
     [trn,tst] = gendat(a.a,0.8);
