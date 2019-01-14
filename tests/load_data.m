@@ -1,4 +1,4 @@
-%load and save data in data.mat
+%load and save data in data.mat, just to speed up things
 function load_data()
     m = prnist([0:9],[1:10:1000]);
     %load and preprocess some data
@@ -7,5 +7,5 @@ function load_data()
     %show(obj)
     a=prdataset(obj);
     
-    save('data1.mat','a');
+    save('../data1.mat','a');
 end
