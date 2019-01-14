@@ -6,32 +6,56 @@
 
 %combiners: start by analysing the confusion matrix, 
 
+%reject curves? should we use this?
+
 %labels
 %W*a*labelc
 
 function scenario1()
     %addpaths() %just the first run :)
-    a = matfile('data1616.mat');
+    a = matfile('data3535.mat');
     trn = a.a;
     
-    %train it: trying with knnc, because it is good
-    w = trn*knnc;
+    %trying with knn because it's good
+    disp('35x35 pixel');
+    batch_tests(trn,knnc);
     
-    %combiners
+    %you can add here your algorithms!
     
-    %pca
-    
-    %something else?
-    
-    %cross-val for some reason
-    prcrossval(trn,knnc,10,10)
-    
-    %test it
-    %final_test(trn*knn);
 end
 
-function final_test(w)
-    nist_eval('my_rep',w,100)
+function batch_tests(trn,algorithm)
+    %regular 
+    regular_test(trn,algorithm);
+    %combiners
+    combiners_test(trn,algorithm);
+    %pca
+    pca_test(trn,algorithm); 
+    %something else?
+    
+    %cross-val ?
+    e = prcrossval(trn,algorithm,10,10);
+    X = sprintf('Cross-Val  e = %d',e);
+    disp(X);
+end
+
+function regular_test(trn,algorithm)
+    w = trn*algorithm;
+    e = nist_eval('my_rep',w,100);
+    X = sprintf('Normal     e = %d',e);
+    disp(X);
+end
+
+function combiners_test(trn,algorithm)
+    %TODO
+end
+
+function pca_test(trn,algorithm)
+    u = scalem([],'variance')*pcam([],0.95)*algorithm;
+    w = trn*u;
+    e = nist_eval('my_rep',w,100);
+    X = sprintf('PCA        e = %d',e);
+    disp(X)
 end
 
 function addpaths
