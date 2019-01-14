@@ -15,9 +15,14 @@ function scenario1()
     trn = a.a;
     
     %train it
-    W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
-    w = trn*knnc;
+    %W = trn*{parzenc([],0.5),knnc,naivebc,loglc};
     
+    %test it
+    w = trn*knn;
+    final_test(w);
+end
+
+function final_test(w)
     nist_eval('my_rep',w,100)
 end
 
