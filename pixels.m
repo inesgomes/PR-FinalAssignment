@@ -24,6 +24,65 @@ prcrossval(a,knnc([]));
 disp("Leave one out - with PCA")
 prcrossval(a,pcam([],0.95)*knnc([]));
 
+%============================
+% NMC
+%============================
+% => Scenario2 
+% err100 = prcrossval(a,nmc([]));
+% fprintf('NMC 100-fold error = %d\n', err100);
+% err100pca = prcrossval(a,pcam([],0.95)*nmc([]));
+% fprintf('NMC 100-fold + PCA error = %d\n', err100pca);
+
+% => Scenario1 
+% err10 = prcrossval(a,nmc([]), 10);
+% fprintf('NMC 10-fold error = %d\n', err10);
+% err10pca = prcrossval(a,pcam([],0.95)*nmc([]), 10);
+% fprintf('NMC 10-fold + PCA error = %d\n', err10pca);
+%============================
+% LDC
+%============================
+% => Scenario2 
+% err100 = prcrossval(a,ldc([]));
+% fprintf('LDC 100-fold error = %d\n', err100);
+% err100pca = prcrossval(a,pcam([],0.95)*ldc([]));
+% fprintf('LDC 100-fold + PCA error = %d\n', err100pca);
+
+% => Scenario1 
+% err10 = prcrossval(a,ldc([]), 10);
+% fprintf('LDC 10-fold error = %d\n', err10);
+% err10pca = prcrossval(a,pcam([],0.95)*ldc([]), 10);
+% fprintf('LDC 10-fold + PCA error = %d\n', err10pca);
+%============================
+% QDC
+%============================
+% => Scenario2 
+% err100 = prcrossval(a,qdc([]));
+% fprintf('QDC 100-fold error = %d\n', err100);
+% err100pca = prcrossval(a,pcam([],0.95)*qdc([]));
+% fprintf('QDC 100-fold + PCA error = %d\n', err100pca);
+
+% => Scenario1 
+% err10 = prcrossval(a,qdc([]), 10);
+% fprintf('QDC 10-fold error = %d\n', err10);
+% err10pca = prcrossval(a,pcam([],0.95)*qdc([]), 10);
+% fprintf('QDC 10-fold + PCA error = %d\n', err10pca);
+%============================
+% FISHERC
+%============================
+% => Scenario2 
+% err100 = prcrossval(a,fisherc([]));
+% fprintf('FISHERC 100-fold error = %d\n', err100);
+% err100pca = prcrossval(a,pcam([],0.95)*fisherc([]));
+% fprintf('FISHERC 100-fold + PCA error = %d\n', err100pca);
+
+% => Scenario1 
+% err10 = prcrossval(a,fisherc([]), 10);
+% fprintf('FISHERC 10-fold error = %d\n', err10);
+% err10pca = prcrossval(a,pcam([],0.95)*fisherc([]), 10);
+% fprintf('FISHERC 10-fold + PCA error = %d\n', err10pca);
+
+
+
 % Parameter optimization. (use if needed)
 % param = ['p', 'r']; % Array of params
 % for i = 1:length(param)
