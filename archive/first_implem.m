@@ -57,9 +57,3 @@ function pca_test(trn,algorithm)
     X = sprintf('PCA        e = %d',e);
     disp(X)
 end
-
-function addpaths
-    addpath('tests');
-    addpath('../prtools');
-    addpath('../coursedata');
-end
