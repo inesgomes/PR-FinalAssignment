@@ -4,35 +4,58 @@
 % use my_rep with im_resize([],[16 16])
 % use my_rep with im_resize([],[35 35])
 
+prwarning off
+
 % Scenario 2
-a = createDataset();
+[trn, tst, a] = createDataset();
     
-%algorithm = svc([],proxm('p',4));
-algorithm = knnc;
-%algorithm = parzenc([],0.5);
+clsf = knnc;
+%clsf = parzenc([],0.5);
+u = pcam([],0.95)*clsf;
    
-%batch_tests(a,algorithm);
+% SIMPLE TESTS
+batch_tests(a,clsf);
+final_test(a,clsf);
+final_test(a,u);
 
-u = pcam([],0.95)*algorithm;
+%FEATURE SELECTION
+% featnum = [1:20:324];
+% mf = max(featnum);
+% [w,r] = featseli(trn,'eucl-m',mf);
+% e = clevalf(trn*w,u,featnum,[],1,tst*w);
+% plote(e);
+% x = trn*w*u;
+% e_test = testc(tst*w*x);
+%final_test(trn*w,u); %NOT WORKING
 
+%TRAINING SET SIZES 
 % sizes = [100,500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
 % e = cleval(trn,u,sizes,10,tst);
 % plote(e);
 
-final_test(a,u);
-
-
-
-%OTHERS
-%w = baggingc(a,pcam([],0.95)*algorithm,50,meanc);
-% w = baggingc(a,treec([],'infcrit',0));
+%BAGGING
+% w = baggingc(a,u,50,maxc);
+% e_test = testc(tst*w)
 % e = nist_eval('my_rep',w, 100)
 
-%adaboostc(a,stumpc,number of base classifiers,[],0) ? ver um grafico?
-%TODO tune decision trees with cross-validation
+%COMBINERS
+% v = [knnc parzenc(0.5)]*nmc;
+% v = [knnc parzenc(0.5) qdc]*votec;
+% v = [knnc parzenc(0.5) nmc]*votec;
+% w = trn*v;
+% e_test = testc(tst*w)
+% e = nist_eval('my_rep',a*v, 100)
 
-function [trn,tst] = createDataset
+%BOOSTING
+% [w,v,alf] = adaboostc(trn,u);
+% e_test = testc(tst*w)
+% e = nist_eval('my_rep',w,100)
+
+
+function [trn, tst, a] = createDataset
     m = prnist([0:9],[1:100:1000]);
+    %optimal N
+    N = 900;
 
     %create big training set
     preproc = im_box([],0,1)*im_rotate*im_resize([],[16 16],'cubic')*im_box([],1,0);
@@ -49,11 +72,11 @@ function [trn,tst] = createDataset
     a6 = prdataset(obj6);
     a7 = prdataset(obj7);
     %add noise
-    a1_n = gendatk(a1,900);
-    a4_n = gendatk(a4,900);
-    a5_n = gendatk(a5,900);
-    a6_n = gendatk(a6,900);
-    a7_n = gendatk(a7,900);
+    a1_n = gendatk(a1,N);
+    a4_n = gendatk(a4,N);
+    a5_n = gendatk(a5,N);
+    a6_n = gendatk(a6,N);
+    a7_n = gendatk(a7,N);
     
     a =[a1;a1_n;a4;a4_n;a5;a5_n;a6;a6_n;a7;a7_n];
    

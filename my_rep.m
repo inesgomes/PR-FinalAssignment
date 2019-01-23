@@ -4,4 +4,8 @@ function a = my_rep(m)
     obj = m * preproc;
     %show(obj)
     a=prdataset(obj);
+    
+    %JUST FOR FEATURE SELECTION
+%     [w,r] = featseli(a,'eucl-m',321);
+%     a = a*w
 end
