@@ -5,42 +5,74 @@
 % use my_rep with im_resize([],[35 35])
 
 % Scenario 2
-m = prnist([0:9],[1:100:1000]);
-
-%create big training set
-preproc = im_box([],0,1)*im_rotate*im_resize([],[16 16])*im_box([],1,0);
-%rotate images
-obj1 = m * preproc;
-obj2 = m * preproc*im_rotate([],0.4);
-obj3 = m * preproc*im_rotate([],-0.4);
-obj4 = m * preproc*im_rotate([],0.2);
-obj5 = m * preproc*im_rotate([],-0.2);
-%create dataset
-a1 = prdataset(obj1);
-a2 = prdataset(obj2);
-a3 = prdataset(obj3);
-a4 = prdataset(obj4);
-a5 = prdataset(obj5);
-%add noise
-a1_n = gendatk(a1);
-a2_n = gendatk(a2);
-a3_n = gendatk(a3);
-a4_n = gendatk(a4);
-a5_n = gendatk(a5);
-      
-a = [a1;a1_n;a2;a2_n;a3;a3_n;a4;a4_n;a5;a5_n];
-%a = [a_n;a2_n;a3_n];
+a = createDataset();
     
 %algorithm = svc([],proxm('p',4));
 algorithm = knnc;
-%algorithm = parzenc([],1);
+%algorithm = parzenc([],0.5);
    
-batch_tests(a,algorithm);
+%batch_tests(a,algorithm);
+
 u = pcam([],0.95)*algorithm;
+
+% sizes = [100,500,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000];
+% e = cleval(trn,u,sizes,10,tst);
+% plote(e);
+
 final_test(a,u);
 
+
+
 %OTHERS
-%w1 = baggingc(trn,pcam([],0.95)*nmc,50,meanc);
+%w = baggingc(a,pcam([],0.95)*algorithm,50,meanc);
+% w = baggingc(a,treec([],'infcrit',0));
+% e = nist_eval('my_rep',w, 100)
+
+%adaboostc(a,stumpc,number of base classifiers,[],0) ? ver um grafico?
+%TODO tune decision trees with cross-validation
+
+function [trn,tst] = createDataset
+    m = prnist([0:9],[1:100:1000]);
+
+    %create big training set
+    preproc = im_box([],0,1)*im_rotate*im_resize([],[16 16],'cubic')*im_box([],1,0);
+    %rotate images
+    obj1 = m * preproc;
+    obj4 = m * preproc*im_rotate([],0.4);
+    obj5 = m * preproc*im_rotate([],-0.4);
+    obj6 = m * preproc*im_rotate([],0.2);
+    obj7 = m * preproc*im_rotate([],-0.2);
+    %create dataset
+    a1 = prdataset(obj1);
+    a4 = prdataset(obj4);
+    a5 = prdataset(obj5);
+    a6 = prdataset(obj6);
+    a7 = prdataset(obj7);
+    %add noise
+    a1_n = gendatk(a1,900);
+    a4_n = gendatk(a4,900);
+    a5_n = gendatk(a5,900);
+    a6_n = gendatk(a6,900);
+    a7_n = gendatk(a7,900);
+    
+    a =[a1;a1_n;a4;a4_n;a5;a5_n;a6;a6_n;a7;a7_n];
+   
+    %OTHERS
+    %create test and training set
+    [trn1,tst1] = gendat(a1,0.9);
+    [trn4,tst4] = gendat(a4,0.9);
+    [trn5,tst5] = gendat(a5,0.9);
+    [trn6,tst6] = gendat(a6,0.9);
+    [trn7,tst7] = gendat(a7,0.9);
+    [tst1_n,trn1_n] = gendat(a1_n,[1,1,1,1,1,1,1,1,1,1]);
+    [tst4_n,trn4_n] = gendat(a4_n,[1,1,1,1,1,1,1,1,1,1]);
+    [tst5_n,trn5_n] = gendat(a5_n,[1,1,1,1,1,1,1,1,1,1]);
+    [tst6_n,trn6_n] = gendat(a6_n,[1,1,1,1,1,1,1,1,1,1]);
+    [tst7_n,trn7_n] = gendat(a7_n,[1,1,1,1,1,1,1,1,1,1]);
+    
+    trn = [trn1;trn4;trn5;trn6;trn7;trn1_n;trn4_n;trn5_n;trn6_n;trn7_n];
+    tst = [tst1;tst4;tst5;tst6;tst7;tst1_n;tst4_n;tst5_n;tst6_n;tst7_n];
+end
 
 function batch_tests(a, algorithm)
     disp("10-fold - without PCA")
@@ -54,7 +86,7 @@ end
 
 function final_test(trn,algorithm)
     w = trn*algorithm;
-    e = nist_eval('my_rep',w, 50);
+    e = nist_eval('my_rep',w, 100);
     X = sprintf('FINAL     e = %d',e);
     disp(X);
 end
