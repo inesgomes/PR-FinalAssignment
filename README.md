@@ -1,2 +1,3 @@
 # PR-FinalAssignment
-TUDelft Pattern Recognition course
+
+TUDelft Pattern Recognition course final assignment
