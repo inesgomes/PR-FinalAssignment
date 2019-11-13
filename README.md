@@ -1,3 +1,3 @@
-# PR-FinalAssignment
+# Pattern Recognition - Final Assignment
 
-TUDelft Pattern Recognition course final assignment
+TU Delft Pattern Recognition course (IN4085) final assignment related to NIST Dataset Classification
